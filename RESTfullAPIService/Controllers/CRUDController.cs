@@ -46,7 +46,7 @@ namespace RESTfullAPIService.Controllers
         /// </summary>
         /// <param name="id">Find by id</param>
         /// <returns></returns>
-        public User GetUser(int id)
+        public User GetUserById(int id)
         {
             List<User> users = new List<User>();
 
@@ -63,7 +63,7 @@ namespace RESTfullAPIService.Controllers
         /// </summary>
         /// <param name="name">Find by name</param>
         /// <returns></returns>
-        public User GetUser(string name)
+        public User GetUserByName(string name)
         {
             List<User> users = new List<User>();
 
@@ -81,7 +81,7 @@ namespace RESTfullAPIService.Controllers
         /// </summary>
         /// <param name="id">Find by id</param>
         /// <param name="name"> For edit </param>
-        public void PutUser(int id, string name)
+        public void EditUser(int id, string name)
         {
             List<User> users = new List<User>();
 

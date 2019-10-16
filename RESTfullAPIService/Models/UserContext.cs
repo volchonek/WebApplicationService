@@ -15,7 +15,7 @@ namespace RESTfullAPIService.Models
         // TODO dbConnection to database
         public UserContext(DbContextOptions<UserContext> options)
             : base(options)
-        { 
+        {
         }
 
         public DbSet<User> Users { get; set; }

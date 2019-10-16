@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace RESTfullAPIService.Controllers
 {
     [ApiController]
-    [Route("rest-api/[controller]")]
+    [Route("api/[controller]")]
     public class RESTapiController : ControllerBase
     {
         readonly CRUDController crud = new CRUDController();
@@ -18,7 +18,6 @@ namespace RESTfullAPIService.Controllers
         public IEnumerable<string> Get()
         { 
 
-            crud.GetAllUsers();
             return new string[] { "user1", "user2" };
         }
 
