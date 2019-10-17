@@ -15,6 +15,8 @@ using Serilog;
 using RESTfullAPIService.Models;
 using Swashbuckle.AspNetCore.Swagger;
 using System.Globalization;
+using RESTfullAPIService.Interfaces;
+using RESTfullAPIService.Implementations;
 
 namespace RESTfullAPIService
 {
@@ -28,11 +30,11 @@ namespace RESTfullAPIService
             //Change Level to Debug or smth... 
             Log.Logger = new LoggerConfiguration()
                 .MinimumLevel.Information()
-                .Enrich.With(new UtcTimestampEnricher())
-                .WriteTo.ColoredConsole(
-                    outputTemplate:
-                    "{UtcTimestamp:yyyy-MM-dd HH:mm:ss.fff} [{Level}] {CallerMemberName} {Message:lj}{NewLine}{Exception}",
-                    formatProvider: CultureInfo.InvariantCulture)
+                //.Enrich.With(new UtcTimestampEnricher())
+                //.WriteTo.ColoredConsole(
+                //    outputTemplate:
+                //    "{UtcTimestamp:yyyy-MM-dd HH:mm:ss.fff} [{Level}] {CallerMemberName} {Message:lj}{NewLine}{Exception}",
+                //    formatProvider: CultureInfo.InvariantCulture)
                 .CreateLogger();
         }
 
@@ -62,12 +64,14 @@ namespace RESTfullAPIService
                 loggingBuilder.ClearProviders();
                 loggingBuilder.AddSerilog(new LoggerConfiguration()
                     .MinimumLevel.Debug()
-                    .Enrich.With(new UtcTimestampEnricher())
-                    .WriteTo.ColoredConsole(
-                        outputTemplate:
-                        "{UtcTimestamp:yyyy-MM-dd HH:mm:ss.fff} [{Level}] {Message:lj}{NewLine}{Exception}")
+                    //.Enrich.With(new UtcTimestampEnricher())
+                    //.WriteTo.ColoredConsole(
+                    //    outputTemplate:
+                    //    "{UtcTimestamp:yyyy-MM-dd HH:mm:ss.fff} [{Level}] {Message:lj}{NewLine}{Exception}")
                     .CreateLogger(), dispose: false);
             });
+
+            services.AddTransient<ICRUD, CRUD>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -82,8 +86,8 @@ namespace RESTfullAPIService
                 app.UseHsts();
             }
 
-            app.UseSwagger(c => { c.RouteTemplate = "/swagger/{documentName}/swagger.json"; });
-            app.UseSwaggerUI(c => { c.SwaggerEndpoint("/swagger/v1/swagger.json", "Web application"); });
+            app.UseSwagger(swg => { swg.RouteTemplate = "/swagger/{documentName}/swagger.json"; });
+            app.UseSwaggerUI(swg => { swg.SwaggerEndpoint("/swagger/v1/swagger.json", "Web application"); });
 
             app.UseHttpsRedirection();
 

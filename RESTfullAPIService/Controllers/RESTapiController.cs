@@ -4,6 +4,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using RESTfullAPIService.Interfaces;
+using RESTfullAPIService.Models;
 
 namespace RESTfullAPIService.Controllers
 {
@@ -12,13 +14,19 @@ namespace RESTfullAPIService.Controllers
     public class RESTapiController : ControllerBase
     {
         readonly CRUDController crud = new CRUDController();
+        private ICRUD _iCrud;
+
+        public RESTapiController(ICRUD iCRUD)
+        {
+            _iCrud = iCRUD;
+        }
 
         // GET: api/User
         [HttpGet]
-        public IEnumerable<string> Get()
-        { 
-
-            return new string[] { "user1", "user2" };
+        public async Task<IActionResult> Get()
+        {
+            return Ok(await _iCrud.GetAllUsers());
+            //return new string[] { "user1", "user2" };
         }
 
         // GET: api/User/5
@@ -30,8 +38,9 @@ namespace RESTfullAPIService.Controllers
 
         // POST: api/User
         [HttpPost]
-        public void Post([FromBody] string value)
+        public void Post([FromBody] User value)
         {
+            //if()
         }
 
         // PUT: api/User/5
