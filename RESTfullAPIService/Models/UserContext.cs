@@ -1,19 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 
 namespace RESTfullAPIService.Models
 {
-    public class UserContext : DbContext
+    public class UserDbContext : DbContext
     {
-        public UserContext()
+        public UserDbContext()
         {
         }
 
-        // TODO dbConnection to database
-        public UserContext(DbContextOptions<UserContext> options)
+        public UserDbContext(DbContextOptions<UserDbContext> options)
             : base(options)
         {
         }

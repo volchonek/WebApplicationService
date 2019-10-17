@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
+﻿using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using RESTfullAPIService.Interfaces;
 using RESTfullAPIService.Models;
@@ -13,46 +9,46 @@ namespace RESTfullAPIService.Controllers
     [Route("api/[controller]")]
     public class RESTapiController : ControllerBase
     {
-        readonly CRUDController crud = new CRUDController();
-        private ICRUD _iCrud;
+        private ICRUD _icrud;
 
-        public RESTapiController(ICRUD iCRUD)
+        public RESTapiController(ICRUD icrud)
         {
-            _iCrud = iCRUD;
+            _icrud = icrud;
         }
 
         // GET: api/User
         [HttpGet]
-        public async Task<IActionResult> Get()
+        public async Task<IActionResult> GetAllUser()
         {
-            return Ok(await _iCrud.GetAllUsers());
-            //return new string[] { "user1", "user2" };
+            return Ok(await _icrud.GetAllUsers());
         }
 
         // GET: api/User/5
         [HttpGet("{id}", Name = "Get")]
-        public string Get(int id)
+        public async Task<IActionResult> GetUserById(int id)
         {
-            return "user_id";
-        }
+            return Ok(await _icrud.GetUserById(id));
+        } 
 
         // POST: api/User
         [HttpPost]
-        public void Post([FromBody] User value)
+        public async Task<IActionResult> CreateUser([FromBody] User value)
         {
-            //if()
+           return Ok(await _icrud.CreateUser(value.Id, value.Name));
         }
 
         // PUT: api/User/5
         [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
+        public async Task<IActionResult> UpdateUser(int id, [FromBody] User value)
         {
+            return Ok(await _icrud.UpdateUser(value.Id, value.Name));
         }
 
         // DELETE: api/ApiWithActions/5
         [HttpDelete("{id}")]
-        public void Delete(int id)
+        public async Task<IActionResult> DeleteUser(int id)
         {
+            return Ok(await _icrud.DeleteUser(id));
         }
     }
 }

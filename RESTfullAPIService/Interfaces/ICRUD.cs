@@ -1,20 +1,14 @@
 ﻿using RESTfullAPIService.Models;
-using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace RESTfullAPIService.Interfaces
 {
+    /// <summary>
+    /// Interface Create Read Update Delete 
+    /// </summary>
     public interface ICRUD
-    {  /// <summary>
-       /// Create new user
-       /// </summary>
-       /// <param name="id">Set id</param>
-       /// <param name="name">Set username</param>
-        public void CreateUser(int id, string name);
-
-
+    {  
         /// <summary>
         /// Get all users
         /// </summary>
@@ -27,28 +21,26 @@ namespace RESTfullAPIService.Interfaces
         /// </summary>
         /// <param name="id">Find by id</param>
         /// <returns></returns>
-        public User GetUserById(int id);
-
+        public Task<User> GetUserById(int id);
 
         /// <summary>
-        /// Get user by name, return first find user.
+        /// Create new user
         /// </summary>
-        /// <param name="name">Find by name</param>
-        /// <returns></returns>
-        public User GetUserByName(string name);
-
+        /// <param name="id">Set id</param>
+        /// <param name="name">Set username</param>
+        public Task<User> CreateUser(int id, string name);
 
         /// <summary>
         /// Edit username by id user
         /// </summary>
         /// <param name="id">Find by id</param>
         /// <param name="name"> For edit </param>
-        public void EditUser(int id, string name);
+        public Task<User> UpdateUser(int id, string name);
 
         /// <summary>
         /// Delete user by id
         /// </summary>
         /// <param name="id">Find by id</param>
-        public void DeleteUser(int id);
+        public Task<User> DeleteUser(int id);
     }
 }

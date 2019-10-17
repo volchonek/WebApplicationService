@@ -1,11 +1,5 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -30,11 +24,11 @@ namespace RESTfullAPIService
             //Change Level to Debug or smth... 
             Log.Logger = new LoggerConfiguration()
                 .MinimumLevel.Information()
-                //.Enrich.With(new UtcTimestampEnricher())
-                //.WriteTo.ColoredConsole(
-                //    outputTemplate:
-                //    "{UtcTimestamp:yyyy-MM-dd HH:mm:ss.fff} [{Level}] {CallerMemberName} {Message:lj}{NewLine}{Exception}",
-                //    formatProvider: CultureInfo.InvariantCulture)
+                .Enrich.With(new UtcTimeStampEnricher())
+                .WriteTo.Console(
+                    outputTemplate:
+                    "{utctimestamp:yyyy-mm-dd hh:mm:ss.fff} [{level}] {callermembername} {message:lj}{newline}{exception}",
+                    formatProvider: CultureInfo.InvariantCulture)
                 .CreateLogger();
         }
 
@@ -47,7 +41,7 @@ namespace RESTfullAPIService
             services.AddMvc();
 
             // Conect to db posgree
-            services.AddDbContext<UserContext>(options => options.UseNpgsql("Host = localhost; Port = 5432; Database = webApp; Username = webApp; Password = webApp"), ServiceLifetime.Transient);
+            services.AddDbContext<UserDbContext>(options => options.UseNpgsql("Host = localhost; Port = 5432; Database = webApp; Username = webApp; Password = webApp"), ServiceLifetime.Transient);
             services.AddEntityFrameworkNpgsql();
 
             // Generate swagger
@@ -64,10 +58,10 @@ namespace RESTfullAPIService
                 loggingBuilder.ClearProviders();
                 loggingBuilder.AddSerilog(new LoggerConfiguration()
                     .MinimumLevel.Debug()
-                    //.Enrich.With(new UtcTimestampEnricher())
-                    //.WriteTo.ColoredConsole(
-                    //    outputTemplate:
-                    //    "{UtcTimestamp:yyyy-MM-dd HH:mm:ss.fff} [{Level}] {Message:lj}{NewLine}{Exception}")
+                    .Enrich.With(new UtcTimeStampEnricher())
+                    .WriteTo.Console(
+                        outputTemplate:
+                        "{UtcTimestamp:yyyy-MM-dd HH:mm:ss.fff} [{Level}] {Message:lj}{NewLine}{Exception}")
                     .CreateLogger(), dispose: false);
             });
 
