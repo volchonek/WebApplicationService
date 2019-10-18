@@ -13,7 +13,7 @@ namespace RESTfullAPIService.Implementations
     {
         private UserDbContext _db;
 
-        public CRUD(UserDbContext userDbContext) 
+        public CRUD(UserDbContext userDbContext)
         {
             _db = userDbContext;
         }
@@ -27,11 +27,11 @@ namespace RESTfullAPIService.Implementations
         public async Task<User> CreateUser(int id, string name)
         {
             User user;
-          
+
             user = new User { Id = id, Name = name };
             await _db.Users.AddAsync(user);
             await _db.SaveChangesAsync();
-            
+
             return user;
         }
 
@@ -44,12 +44,12 @@ namespace RESTfullAPIService.Implementations
         public async Task<User> UpdateUser(int id, string name)
         {
             User user;
-     
+
             user = await _db.Users.FindAsync(id);
             user.Name = name;
             _db.Users.Update(user);
             await _db.SaveChangesAsync();
-            
+
             return user;
         }
 
@@ -61,11 +61,11 @@ namespace RESTfullAPIService.Implementations
         public async Task<User> DeleteUser(int id)
         {
             User user;
-          
+
             user = await _db.Users.FindAsync(id);
             _db.Users.Remove(user);
             await _db.SaveChangesAsync();
-            
+
             return user;
         }
 
@@ -76,9 +76,9 @@ namespace RESTfullAPIService.Implementations
         public List<User> GetAllUsers()
         {
             List<User> listUsers = new List<User>();
-       
-           listUsers = _db.Users.ToList();
-  
+
+            listUsers = _db.Users.ToList();
+
             return listUsers;
         }
 

@@ -8,7 +8,7 @@ namespace RESTfullAPIService.Interfaces
     /// Interface Create Read Update Delete 
     /// </summary>
     public interface ICRUD
-    {  
+    {
         /// <summary>
         /// Get all users
         /// </summary>

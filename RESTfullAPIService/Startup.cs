@@ -1,16 +1,16 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
-using Serilog;
-using RESTfullAPIService.Models;
-using Swashbuckle.AspNetCore.Swagger;
-using System.Globalization;
-using RESTfullAPIService.Interfaces;
 using RESTfullAPIService.Implementations;
+using RESTfullAPIService.Interfaces;
+using RESTfullAPIService.Models;
+using Serilog;
+using System.Globalization;
 
 namespace RESTfullAPIService
 {
@@ -37,27 +37,18 @@ namespace RESTfullAPIService
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_3_0);
             services.AddControllers();
-            services.AddMvc();
 
             // Conect to db posgree
             services.AddDbContextPool<UserDbContext>(o =>
             {
                 //o.UseLoggerFactory(DebugLoggerFactory);
-                o.UseNpgsql("Host = 192.168.11.186; Port = 5433; Database = webApp; Username = webApp; Password = webApp");
+                o.UseNpgsql("Host = 192.168.1.49; Port = 5433; Database = webApp; Username = webApp; Password = webApp");
             });
 
             // services.AddDbContext<UserDbContext>(options => options.UseNpgsql("Host = localhost; Port = 5432; Database = webApp; Username = webApp; Password = webApp"), ServiceLifetime.Transient);
             services.AddEntityFrameworkNpgsql();
-
-            // Generate swagger
-            services.AddSwaggerGen(swg =>
-            swg.SwaggerDoc("v1", new Info
-            {
-                Version = "v1",
-                Title = "Web Application",
-                Description = "Trial period web application"
-            }));
 
             services.AddLogging(loggingBuilder =>
             {
@@ -72,6 +63,16 @@ namespace RESTfullAPIService
             });
 
             services.AddTransient<ICRUD, CRUD>();
+
+            // Generate swagger
+            services.AddSwaggerGen(swg =>
+                swg.SwaggerDoc("v1", new Microsoft.OpenApi.Models.OpenApiInfo
+                {
+                    Version = "v1",
+                    Title = "WebApplicationService",
+                    Description = "Testing web application"
+                }
+            ));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -81,13 +82,13 @@ namespace RESTfullAPIService
             {
                 app.UseDeveloperExceptionPage();
             }
-            else 
+            else
             {
                 app.UseHsts();
             }
 
             app.UseSwagger(swg => { swg.RouteTemplate = "/swagger/{documentName}/swagger.json"; });
-            app.UseSwaggerUI(swg => { swg.SwaggerEndpoint("/swagger/v1/swagger.json", "Web application"); });
+            app.UseSwaggerUI(swg => { swg.SwaggerEndpoint("/swagger/v1/swagger.json", "Web Application v1"); });
 
             app.UseHttpsRedirection();
 
@@ -95,10 +96,10 @@ namespace RESTfullAPIService
 
             app.UseAuthorization();
 
-            app.UseEndpoints(endpoints =>
-            {
-                endpoints.MapControllers();
-            });
+            //app.UseEndpoints(endpoints =>
+            //{
+            //    endpoints.MapControllers();
+            //});
         }
     }
 }
