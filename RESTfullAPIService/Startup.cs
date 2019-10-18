@@ -41,7 +41,13 @@ namespace RESTfullAPIService
             services.AddMvc();
 
             // Conect to db posgree
-            services.AddDbContext<UserDbContext>(options => options.UseNpgsql("Host = localhost; Port = 5432; Database = webApp; Username = webApp; Password = webApp"), ServiceLifetime.Transient);
+            services.AddDbContextPool<UserDbContext>(o =>
+            {
+                //o.UseLoggerFactory(DebugLoggerFactory);
+                o.UseNpgsql("Host = 192.168.11.186; Port = 5433; Database = webApp; Username = webApp; Password = webApp");
+            });
+
+            // services.AddDbContext<UserDbContext>(options => options.UseNpgsql("Host = localhost; Port = 5432; Database = webApp; Username = webApp; Password = webApp"), ServiceLifetime.Transient);
             services.AddEntityFrameworkNpgsql();
 
             // Generate swagger

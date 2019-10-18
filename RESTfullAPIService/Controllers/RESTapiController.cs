@@ -20,7 +20,7 @@ namespace RESTfullAPIService.Controllers
         [HttpGet]
         public async Task<IActionResult> GetAllUser()
         {
-            return Ok(await _icrud.GetAllUsers());
+            return Ok( _icrud.GetAllUsers());
         }
 
         // GET: api/User/5

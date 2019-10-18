@@ -11,6 +11,13 @@ namespace RESTfullAPIService.Implementations
     /// </summary>
     public class CRUD : ICRUD
     {
+        private UserDbContext _db;
+
+        public CRUD(UserDbContext userDbContext) 
+        {
+            _db = userDbContext;
+        }
+
         /// <summary>
         /// Create user in database
         /// </summary>
@@ -19,16 +26,13 @@ namespace RESTfullAPIService.Implementations
         /// <returns></returns>
         public async Task<User> CreateUser(int id, string name)
         {
-            User _user;
-
-            await using(UserDbContext _userDbContext = new UserDbContext())
-            {
-                _user = new User { Id = id, Name = name };
-                await _userDbContext.Users.AddAsync(_user);
-                await _userDbContext.SaveChangesAsync();
-            }
-
-            return _user;
+            User user;
+          
+            user = new User { Id = id, Name = name };
+            await _db.Users.AddAsync(user);
+            await _db.SaveChangesAsync();
+            
+            return user;
         }
 
         /// <summary>
@@ -39,17 +43,14 @@ namespace RESTfullAPIService.Implementations
         /// <returns></returns>
         public async Task<User> UpdateUser(int id, string name)
         {
-            User _user;
-
-            await using(UserDbContext _db = new UserDbContext())
-            {
-                _user = await _db.Users.FindAsync(id);
-                _user.Name = name;
-                _db.Users.Update(_user);
-                await _db.SaveChangesAsync();
-            }
-
-            return _user;
+            User user;
+     
+            user = await _db.Users.FindAsync(id);
+            user.Name = name;
+            _db.Users.Update(user);
+            await _db.SaveChangesAsync();
+            
+            return user;
         }
 
         /// <summary>
@@ -59,32 +60,26 @@ namespace RESTfullAPIService.Implementations
         /// <returns></returns>
         public async Task<User> DeleteUser(int id)
         {
-            User _user;
-
-            await using(UserDbContext _db = new UserDbContext())
-            {
-                _user = await _db.Users.FindAsync(id);
-                _db.Users.Remove(_user);
-                await _db.SaveChangesAsync();
-            }
-
-            return _user;
+            User user;
+          
+            user = await _db.Users.FindAsync(id);
+            _db.Users.Remove(user);
+            await _db.SaveChangesAsync();
+            
+            return user;
         }
 
         /// <summary>
         /// Get all users
         /// </summary>
         /// <returns> List users </returns>
-        public async Task<List<User>> GetAllUsers()
+        public List<User> GetAllUsers()
         {
-            List<User> _listUsers = new List<User>();
-
-            await using (UserDbContext _userDbContext = new UserDbContext())
-            {
-                _listUsers = _userDbContext.Users.ToList();
-            }
-
-            return _listUsers;
+            List<User> listUsers = new List<User>();
+       
+           listUsers = _db.Users.ToList();
+  
+            return listUsers;
         }
 
         /// <summary>
@@ -94,14 +89,11 @@ namespace RESTfullAPIService.Implementations
         /// <returns></returns>
         public async Task<User> GetUserById(int id)
         {
-            User _user;
+            User user;
 
-            await using(UserDbContext _db = new UserDbContext())
-            {
-                _user = await _db.Users.FindAsync(id);
-            }
+            user = await _db.Users.FindAsync(id);
 
-            return _user;
+            return user;
         }
     }
 }

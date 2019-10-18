@@ -13,7 +13,7 @@ namespace RESTfullAPIService.Interfaces
         /// Get all users
         /// </summary>
         /// <returns></returns>
-        public Task<List<User>> GetAllUsers();
+        public List<User> GetAllUsers();
 
 
         /// <summary>
