@@ -15,9 +15,9 @@ namespace RESTfullAPIService.Models
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.HasDefaultSchema("public");
-            base.OnModelCreating(modelBuilder);
-
             new UserMap(modelBuilder.Entity<User>());
+
+            base.OnModelCreating(modelBuilder);     
         }
     }
 }
