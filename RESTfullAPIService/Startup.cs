@@ -40,14 +40,15 @@ namespace RESTfullAPIService
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_3_0);
             services.AddControllers();
 
-            // Conect to db posgree
-            services.AddDbContextPool<UserDbContext>(o =>
+            // Conect to db posgrees
+            services.AddDbContextPool<UserDbContext>(options =>
             {
-                //o.UseLoggerFactory(DebugLoggerFactory);
-                o.UseNpgsql("Host = 192.168.1.49; Port = 5433; Database = webApp; Username = webApp; Password = webApp");
+                // options.UseLoggerFactory(DebugLoggerFactory);
+                // options.UseNpgsql(Configuration.GetConnectionString("Postgress"));
+                // options.UseNpgsql(Configuration.GetSection("ConnectionString")["Postgress"]);
+                options.UseNpgsql("Host = 192.168.1.49; Port = 5433; Database = WebAppService; Username = user; Password = password");   
             });
-
-            // services.AddDbContext<UserDbContext>(options => options.UseNpgsql("Host = localhost; Port = 5432; Database = webApp; Username = webApp; Password = webApp"), ServiceLifetime.Transient);
+            
             services.AddEntityFrameworkNpgsql();
 
             services.AddLogging(loggingBuilder =>
@@ -90,16 +91,16 @@ namespace RESTfullAPIService
             app.UseSwagger(swg => { swg.RouteTemplate = "/swagger/{documentName}/swagger.json"; });
             app.UseSwaggerUI(swg => { swg.SwaggerEndpoint("/swagger/v1/swagger.json", "Web Application v1"); });
 
-            app.UseHttpsRedirection();
+            // app.UseHttpsRedirection();
 
             app.UseRouting();
 
             app.UseAuthorization();
 
-            //app.UseEndpoints(endpoints =>
-            //{
-            //    endpoints.MapControllers();
-            //});
+            app.UseEndpoints(endpoints =>
+            {
+                endpoints.MapControllers();
+            });
         }
     }
 }

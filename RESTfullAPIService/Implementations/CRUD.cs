@@ -19,6 +19,33 @@ namespace RESTfullAPIService.Implementations
         }
 
         /// <summary>
+        /// Get all users
+        /// </summary>
+        /// <returns> List users </returns>
+        public List<User> GetAllUsers()
+        {
+            List<User> listUsers = new List<User>();
+
+            listUsers = _db.Users.ToList();
+
+            return listUsers;
+        }
+
+        /// <summary>
+        /// Find user by id
+        /// </summary>
+        /// <param name="id"> For search user by id </param>
+        /// <returns></returns>
+        public async Task<User> GetUserById(int id)
+        {
+            User user;
+
+            user = await _db.Users.FindAsync(id);
+
+            return user;
+        }
+
+        /// <summary>
         /// Create user in database
         /// </summary>
         /// <param name="id"> Uniquer number for user </param>
@@ -65,33 +92,6 @@ namespace RESTfullAPIService.Implementations
             user = await _db.Users.FindAsync(id);
             _db.Users.Remove(user);
             await _db.SaveChangesAsync();
-
-            return user;
-        }
-
-        /// <summary>
-        /// Get all users
-        /// </summary>
-        /// <returns> List users </returns>
-        public List<User> GetAllUsers()
-        {
-            List<User> listUsers = new List<User>();
-
-            listUsers = _db.Users.ToList();
-
-            return listUsers;
-        }
-
-        /// <summary>
-        /// Find user by id
-        /// </summary>
-        /// <param name="id"> For search user by id </param>
-        /// <returns></returns>
-        public async Task<User> GetUserById(int id)
-        {
-            User user;
-
-            user = await _db.Users.FindAsync(id);
 
             return user;
         }

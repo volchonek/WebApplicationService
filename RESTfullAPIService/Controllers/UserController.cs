@@ -16,7 +16,7 @@ namespace RESTfullAPIService.Controllers
             _icrud = icrud;
         }
 
-        // GET: User
+        // GET: User Get all users
         [HttpGet]
 #pragma warning disable CS1998 // В данном асинхронном методе отсутствуют операторы await, поэтому метод будет выполняться синхронно. Воспользуйтесь оператором await для ожидания неблокирующих вызовов API или оператором await Task.Run(...) для выполнения связанных с ЦП заданий в фоновом потоке.
         public async Task<IActionResult> GetAllUser()
@@ -25,28 +25,28 @@ namespace RESTfullAPIService.Controllers
             return Ok(_icrud.GetAllUsers());
         }
 
-        // GET: User/{id}
-        [HttpGet("{id}", Name = "Get")]
+        // GET: User/{id} Get user by id
+        [HttpGet("{id}")]
         public async Task<IActionResult> GetUserById(int id)
         {
             return Ok(await _icrud.GetUserById(id));
         }
 
-        // POST: User
+        // POST: User Create user
         [HttpPost]
         public async Task<IActionResult> CreateUser([FromBody] User value)
         {
             return Ok(await _icrud.CreateUser(value.Id, value.Name));
         }
 
-        // PUT: User/{id}
+        // PUT: User/{id} Update user by id
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateUser(int id, [FromBody] User value)
         {
-            return Ok(await _icrud.UpdateUser(value.Id, value.Name));
+            return Ok(await _icrud.UpdateUser(id, value.Name));
         }
 
-        // DELETE: User/{id}
+        // DELETE: User/{id} Delete user by id
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteUser(int id)
         {
