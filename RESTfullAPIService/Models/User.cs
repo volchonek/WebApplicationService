@@ -1,8 +1,10 @@
-﻿namespace RESTfullAPIService.Models
+﻿using System;
+
+namespace RESTfullAPIService.Models
 {
     public class User
     {
-        public string Guid { get; set; }
+        public Guid Guid { get; set; }
         public string Name { get; set; }
     }
 }

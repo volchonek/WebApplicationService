@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore.Migrations;
+﻿using System;
+using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace RESTfullAPIService.Migrations
 {
@@ -14,7 +15,7 @@ namespace RESTfullAPIService.Migrations
                 schema: "public",
                 columns: table => new
                 {
-                    Guid = table.Column<string>(nullable: false),
+                    Guid = table.Column<Guid>(nullable: false),
                     Name = table.Column<string>(nullable: true)
                 },
                 constraints: table =>

@@ -21,14 +21,15 @@ namespace RESTfullAPIService.Controllers
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
+            
             return Ok(await _iur.GetAll());    
         }
 
         // GET: User/{id} Get user by id
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetByGuid(Guid guid)
+        public async Task<IActionResult> GetByGuid(Guid id)
         {
-            return Ok(await _iur.GetByGuid(guid));
+            return Ok(await _iur.GetByGuid(id));
         }
 
         // POST: User Create user
@@ -40,16 +41,16 @@ namespace RESTfullAPIService.Controllers
 
         // PUT: User/{id} Update user by id
         [HttpPut("{id}")]
-        public async Task<IActionResult> Update(Guid guid, [FromBody] User value)
+        public async Task<IActionResult> Update(Guid id, [FromBody] User value)
         {
-            return Ok(await _iur.Update(guid, value));
+            return Ok(await _iur.Update(id, value));
         }
 
         // DELETE: User/{id} Delete user by id
         [HttpDelete("{id}")]
-        public async Task<IActionResult> Delete(Guid guid)
+        public async Task<IActionResult> Delete(Guid id)
         {
-            return Ok(await _iur.Delete(guid));
+            return Ok(await _iur.Delete(id));
         }
     }
 }
