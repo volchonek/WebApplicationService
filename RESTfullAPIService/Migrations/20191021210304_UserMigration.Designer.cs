@@ -9,8 +9,8 @@ using RESTfullAPIService.Models;
 namespace RESTfullAPIService.Migrations
 {
     [DbContext(typeof(UserDbContext))]
-    [Migration("20191020180320_UserMegration")]
-    partial class UserMegration
+    [Migration("20191021210304_UserMigration")]
+    partial class UserMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -23,17 +23,15 @@ namespace RESTfullAPIService.Migrations
 
             modelBuilder.Entity("RESTfullAPIService.Models.User", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnName("Id")
-                        .HasColumnType("integer")
-                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
+                    b.Property<string>("Guid")
+                        .HasColumnName("Guid")
+                        .HasColumnType("text");
 
                     b.Property<string>("Name")
                         .HasColumnName("Name")
                         .HasColumnType("text");
 
-                    b.HasKey("Id");
+                    b.HasKey("Guid");
 
                     b.ToTable("User");
                 });

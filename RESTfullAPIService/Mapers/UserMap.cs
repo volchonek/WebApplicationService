@@ -8,10 +8,10 @@ namespace RESTfullAPIService.Mapers
     {
         public UserMap(EntityTypeBuilder<User> entityTypeBuilder)
         {
-            entityTypeBuilder.HasKey(x => x.Id);
+            entityTypeBuilder.HasKey(x => x.Guid);
             entityTypeBuilder.ToTable("User");
 
-            entityTypeBuilder.Property(x => x.Id).HasColumnName("Id");
+            entityTypeBuilder.Property(x => x.Guid).HasColumnName("Guid");
             entityTypeBuilder.Property(x => x.Name).HasColumnName("Name");
         }
     }

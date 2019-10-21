@@ -21,17 +21,15 @@ namespace RESTfullAPIService.Migrations
 
             modelBuilder.Entity("RESTfullAPIService.Models.User", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnName("Id")
-                        .HasColumnType("integer")
-                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
+                    b.Property<string>("Guid")
+                        .HasColumnName("Guid")
+                        .HasColumnType("text");
 
                     b.Property<string>("Name")
                         .HasColumnName("Name")
                         .HasColumnType("text");
 
-                    b.HasKey("Id");
+                    b.HasKey("Guid");
 
                     b.ToTable("User");
                 });

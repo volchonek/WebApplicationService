@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using RESTfullAPIService.Interfaces;
 using RESTfullAPIService.Models;
+using System;
 using System.Threading.Tasks;
 
 namespace RESTfullAPIService.Controllers
@@ -9,48 +10,46 @@ namespace RESTfullAPIService.Controllers
     [Route("[controller]")]
     public class UserController : ControllerBase
     {
-        private ICRUD _icrud;
+        private IUserRepository _iur;
 
-        public UserController(ICRUD icrud)
+        public UserController(IUserRepository iur)
         {
-            _icrud = icrud;
+            _iur = iur;
         }
 
         // GET: User Get all users
         [HttpGet]
-#pragma warning disable CS1998 // В данном асинхронном методе отсутствуют операторы await, поэтому метод будет выполняться синхронно. Воспользуйтесь оператором await для ожидания неблокирующих вызовов API или оператором await Task.Run(...) для выполнения связанных с ЦП заданий в фоновом потоке.
-        public async Task<IActionResult> GetAllUser()
-#pragma warning restore CS1998 // В данном асинхронном методе отсутствуют операторы await, поэтому метод будет выполняться синхронно. Воспользуйтесь оператором await для ожидания неблокирующих вызовов API или оператором await Task.Run(...) для выполнения связанных с ЦП заданий в фоновом потоке.
+        public async Task<IActionResult> GetAll()
         {
-            return Ok(_icrud.GetAllUsers());
+            return Ok(await _iur.GetAll());    
         }
 
         // GET: User/{id} Get user by id
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetUserById(int id)
+        public async Task<IActionResult> GetByGuid(Guid guid)
         {
-            return Ok(await _icrud.GetUserById(id));
+            return Ok(await _iur.GetByGuid(guid));
         }
 
         // POST: User Create user
         [HttpPost]
-        public async Task<IActionResult> CreateUser([FromBody] User value)
+        public async Task<IActionResult> Create([FromBody] User value)
         {
-            return Ok(await _icrud.CreateUser(value.Id, value.Name));
+            return Ok(await _iur.Create(value));
         }
 
         // PUT: User/{id} Update user by id
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateUser(int id, [FromBody] User value)
+        public async Task<IActionResult> Update(Guid guid, [FromBody] User value)
         {
-            return Ok(await _icrud.UpdateUser(id, value.Name));
+            return Ok(await _iur.Update(guid, value));
         }
 
         // DELETE: User/{id} Delete user by id
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteUser(int id)
+        public async Task<IActionResult> Delete(Guid guid)
         {
-            return Ok(await _icrud.DeleteUser(id));
+            return Ok(await _iur.Delete(guid));
         }
     }
 }

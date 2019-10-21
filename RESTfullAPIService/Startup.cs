@@ -63,7 +63,7 @@ namespace RESTfullAPIService
                     .CreateLogger(), dispose: false);
             });
 
-            services.AddTransient<ICRUD, CRUD>();
+            services.AddTransient<IUserRepository, UserRepository>();
 
             // Generate swagger
             services.AddSwaggerGen(swg =>
@@ -92,11 +92,9 @@ namespace RESTfullAPIService
             app.UseSwaggerUI(swg => { swg.SwaggerEndpoint("/swagger/v1/swagger.json", "Web Application v1"); });
 
             // app.UseHttpsRedirection();
+            // app.UseAuthorization();
 
             app.UseRouting();
-
-            app.UseAuthorization();
-
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
