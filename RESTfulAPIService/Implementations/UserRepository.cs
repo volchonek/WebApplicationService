@@ -1,19 +1,25 @@
-﻿using Microsoft.EntityFrameworkCore;
-using RESTfullAPIService.Interfaces;
-using RESTfullAPIService.Models;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
+using RESTfulAPIService.DbContext;
+using RESTfulAPIService.Interfaces;
+using RESTfulAPIService.Models;
 
-namespace RESTfullAPIService.Implementations
+namespace RESTfulAPIService.Implementations
 {
     /// <summary>
-    /// Implementation CRUD
+    /// Implementation User Repository
     /// </summary>
     public class UserRepository : IUserRepository
     {
-        private UserDbContext _db;
-
+        /// <summary>
+        /// </summary>
+        private readonly UserDbContext _db;
+        
+        /// <summary>
+        /// </summary>
+        /// <param name="userDbContext"></param>
         public UserRepository(UserDbContext userDbContext)
         {
             _db = userDbContext;
@@ -28,9 +34,9 @@ namespace RESTfullAPIService.Implementations
         /// <summary>
         /// Find user by guid
         /// </summary>
-        /// <param name="guid"> Search user by guid </param>
+        /// <param name="id"> Search user by guid </param>
         /// <returns></returns>
-        public async Task<User> GetByGuid(Guid guid) => await _db.Users.FindAsync(guid);
+        public async Task<User> GetByGuid(Guid id) => await _db.Users.FindAsync(id);
 
 
         /// <summary>
@@ -49,12 +55,12 @@ namespace RESTfullAPIService.Implementations
         /// <summary>
         /// Update user in database
         /// </summary>
-        /// <param name="guid"> Guid exist user or guid new user </param>
-        /// <param name="user"> New parametr user or new user </param>
+        /// <param name="id"> Guid exist user or guid new user </param>
+        /// <param name="user"> New parameters user or new user </param>
         /// <returns></returns>
-        public async Task<User> Update(Guid guid, User user)
+        public async Task<User> Update(Guid id, User user)
         {
-            if (await _db.Users.FindAsync(guid) != null)
+            if (await _db.Users.FindAsync(id) != null)
             {
                 _db.Users.Update(user);
             }
@@ -71,11 +77,11 @@ namespace RESTfullAPIService.Implementations
         /// <summary>
         /// Delete user from database
         /// </summary>
-        /// <param name="guid"> Guid for delete user </param>
-        /// <returns> REturn deleting user </returns>
-        public async Task<User> Delete(Guid guid)
+        /// <param name="id"> Guid for delete user </param>
+        /// <returns> Return deleting user </returns>
+        public async Task<User> Delete(Guid id)
         {
-            var user = await _db.Users.FindAsync(guid);
+            var user = await _db.Users.FindAsync(id);
             _db.Users.Remove(user);
             await _db.SaveChangesAsync();
 

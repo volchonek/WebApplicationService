@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.29411.108
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RESTfullAPIService", "RESTfullAPIService\RESTfullAPIService.csproj", "{421D3AEF-4D78-4697-A515-E86F3145DD0B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RESTfulAPIService", "RESTfulAPIService\RESTfulAPIService.csproj", "{421D3AEF-4D78-4697-A515-E86F3145DD0B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
