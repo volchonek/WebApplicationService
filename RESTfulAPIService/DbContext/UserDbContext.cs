@@ -1,5 +1,4 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using RESTfulAPIService.Mapers;
 using RESTfulAPIService.Models;
 
 namespace RESTfulAPIService.DbContext

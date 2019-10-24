@@ -25,14 +25,11 @@ namespace RESTfulAPIService.Controllers
         }
 
         /// <summary>
-        /// User Get all users
+        /// Get all users
         /// </summary>
         /// <returns></returns>
         [HttpGet]
-        public async Task<IActionResult> GetAll()
-        {           
-            return Ok(await _iur.GetAll());    
-        }
+        public async Task<IActionResult> GetAll() => Ok(await _iur.GetAll()); // 200
 
         /// <summary>
         /// Get user by id
@@ -40,20 +37,34 @@ namespace RESTfulAPIService.Controllers
         /// <param name="id"></param>
         /// <returns></returns>
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetByGuid(Guid id)
-        {
-            return Ok(await _iur.GetByGuid(id));
-        }
+        public async Task<IActionResult> GetByGuid(Guid id) => Ok(await _iur.GetByGuid(id)); // 200
 
         /// <summary>
-        /// User Create user
+        /// Get user by name
+        /// </summary>
+        /// <param name="name"></param>
+        /// <returns></returns>
+        [HttpGet("name")]
+        public async Task<IActionResult> GetByName(string name) => Ok( await _iur.GetByName(name)); // 200
+        
+        /// <summary>
+        /// Create user
         /// </summary>
         /// <param name="value"></param>
         /// <returns></returns>
         [HttpPost]
         public async Task<IActionResult> Create([FromBody] User value)
         {
-            return Ok(await _iur.Create(value));
+            // TODO: как перехватить сообщение при пустом body 
+            
+            if (await _iur.Create(value))
+            {
+                return Created($"User create {value.Id}", value); // 201
+            }
+            else
+            {
+                return Conflict($"A user with this {value.Id} already exists."); // 409
+            }
         }
 
         /// <summary>
@@ -65,10 +76,18 @@ namespace RESTfulAPIService.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> Update(Guid id, [FromBody] User value)
         {
-            if (id != value.Id) 
-                return BadRequest();
 
-            return Ok(await _iur.Update(id, value));
+            if (id != value.Id) 
+                return BadRequest($"The {id} does not match the {value.Id} in the body"); // 400
+
+            if (await _iur.Update(id, value))
+            {
+                return Created($"User {id} update or create successful", value); // 201
+            }
+            else
+            {
+                return BadRequest();
+            }
         }
 
         /// <summary>
@@ -79,7 +98,14 @@ namespace RESTfulAPIService.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(Guid id)
         {
-            return Ok(await _iur.Delete(id));
+            if (await _iur.Delete(id))
+            {
+                return  Ok($"User delete {id}"); // 200
+            }
+            else
+            {
+                return NoContent(); // 204
+            }
         }
     }
 }

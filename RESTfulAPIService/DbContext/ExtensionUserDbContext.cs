@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using RESTfulAPIService.Models;
 
-namespace RESTfulAPIService.Mapers
+namespace RESTfulAPIService.DbContext
 {
     /// <summary>
     /// Extension user database context with help method OnModelCreating in UserDbContext

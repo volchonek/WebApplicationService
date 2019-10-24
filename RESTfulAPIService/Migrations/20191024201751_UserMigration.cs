@@ -3,8 +3,13 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace RESTfulAPIService.Migrations
 {
+    /// <summary>
+    /// </summary>
     public partial class UserMigration : Migration
     {
+        /// <summary>
+        /// </summary>
+        /// <param name="migrationBuilder"></param>
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.EnsureSchema(
@@ -24,6 +29,9 @@ namespace RESTfulAPIService.Migrations
                 });
         }
 
+        /// <summary>
+        /// </summary>
+        /// <param name="migrationBuilder"></param>
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(

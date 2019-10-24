@@ -21,11 +21,15 @@ namespace RESTfulAPIService
     /// </summary>
     public class Startup
     {
+        private readonly IConfiguration _configuration; 
+        
         /// <summary>
         /// </summary>
         /// <param name="configuration"></param>
         public Startup(IConfiguration configuration)
         {
+            _configuration = configuration;
+            
             //Change Level to Debug or smth... 
             Log.Logger = new LoggerConfiguration()
                 .MinimumLevel.Information()
@@ -49,7 +53,13 @@ namespace RESTfulAPIService
             // Connect to database
             services.AddDbContextPool<UserDbContext>(options =>
             {
-                options.UseNpgsql("Host = 192.168.1.49; Port = 5433; Database = WebAppService; Username = user; Password = password");   
+                // options.UseNpgsql("Host = 192.168.1.49; Port = 5433; Database = WebAppService; Username = user; Password = password");
+                options.UseNpgsql( 
+                    $"Host = {_configuration.GetValue("host", "192.168.1.49")};" +
+                    $" Port = {_configuration.GetValue("port", "5433")}; " +
+                    $"Database = {_configuration.GetValue("database", "WebAppService")}; " +
+                    $"Username = {_configuration.GetValue("user", "user")}; " +
+                    $"Password = {_configuration.GetValue("password", "password")}");
             });
             
             services.AddEntityFrameworkNpgsql();
@@ -107,7 +117,7 @@ namespace RESTfulAPIService
             app.UseSwagger(swg => { swg.RouteTemplate = "/swagger/{documentName}/swagger.json"; });
             app.UseSwaggerUI(swg => { swg.SwaggerEndpoint("/swagger/v1/swagger.json", "Web Application v1"); });
 
-            // TODO:
+            // TODO: safety
             // app.UseHttpsRedirection();
             // app.UseAuthorization();
 

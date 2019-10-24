@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 
 namespace RESTfulAPIService
@@ -21,6 +22,7 @@ namespace RESTfulAPIService
         /// <returns></returns>
         private static IHostBuilder CreateHostBuilder(string[] args) =>
             Host.CreateDefaultBuilder(args)
+                .ConfigureAppConfiguration(config => { config.AddCommandLine(args); })
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
                     webBuilder

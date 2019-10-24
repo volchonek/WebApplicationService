@@ -6,43 +6,50 @@ using RESTfulAPIService.Models;
 namespace RESTfulAPIService.Interfaces
 {
     /// <summary>
-    /// Interface Create Read Update Delete 
+    /// Interface Users
     /// </summary>
     public interface IUserRepository
     {
         /// <summary>
         /// Get all users
         /// </summary>
-        /// <returns> Return all searching users </returns>
+        /// <returns> Return all found users </returns>
         Task<List<User>> GetAll();
 
         /// <summary>
         /// Get user by id
         /// </summary>
-        /// <param name="id"> Find user by id</param>
-        /// <returns> Return searching user </returns>
+        /// <param name="id"> Guid of the found user </param>
+        /// <returns> Found user will return </returns>
         Task<User> GetByGuid(Guid id);
 
+        /// <summary>
+        /// Get users by name
+        /// </summary>
+        /// <param name="name"> Find user by name</param>
+        /// <returns> Return the list of the user found </returns>
+        Task<List<User>> GetByName(string name);
+        
         /// <summary>
         /// Create new user
         /// </summary>
         /// <param name="user"> New user </param>
-        /// <returns> Return creating user </returns>
-        Task<User> Create(User user);
+        /// <returns> Return create user </returns>
+        Task<bool> Create(User user);
 
         /// <summary>
         /// Update or create user
         /// </summary>
         /// <param name="id"> Guid exist user or guid new user </param>
         /// <param name="user"> New parameters user or new user </param>
-        /// <returns> Return updating user </returns>
-        Task<User> Update(Guid id, User user);
+        /// <returns> Return update user </returns>
+        Task<bool> Update(Guid id, User user);
 
         /// <summary>
         /// Delete user
         /// </summary>
-        /// <param name="id"></param>
+        /// <param name="id">Guid delete user </param>
         /// <returns> Return deleting user </returns>
-        Task<User> Delete(Guid id);
+        Task<bool> Delete(Guid id);
     }
 }
