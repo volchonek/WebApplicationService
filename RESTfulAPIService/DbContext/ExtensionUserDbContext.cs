@@ -5,12 +5,12 @@ using RESTfulAPIService.Models;
 namespace RESTfulAPIService.DbContext
 {
     /// <summary>
-    /// Extension user database context with help method OnModelCreating in UserDbContext
+    ///     Extension user database context with help method OnModelCreating in UserDbContext
     /// </summary>
     public static class ExtensionUserDbContext
     {
         /// <summary>
-        /// User map for user model
+        ///     User map for user model
         /// </summary>
         /// <param name="entityTypeBuilder"></param>
         public static void UserMap(this EntityTypeBuilder<User> entityTypeBuilder)

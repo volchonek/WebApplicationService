@@ -20,8 +20,9 @@ namespace RESTfulAPIService
         /// </summary>
         /// <param name="args"></param>
         /// <returns></returns>
-        private static IHostBuilder CreateHostBuilder(string[] args) =>
-            Host.CreateDefaultBuilder(args)
+        private static IHostBuilder CreateHostBuilder(string[] args)
+        {
+            return Host.CreateDefaultBuilder(args)
                 .ConfigureAppConfiguration(config => { config.AddCommandLine(args); })
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
@@ -29,5 +30,6 @@ namespace RESTfulAPIService
                         .UseStartup<Startup>()
                         .UseKestrel();
                 });
+        }
     }
 }

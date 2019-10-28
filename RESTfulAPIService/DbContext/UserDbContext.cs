@@ -4,7 +4,7 @@ using RESTfulAPIService.Models;
 namespace RESTfulAPIService.DbContext
 {
     /// <summary>
-    /// Depended database context for user
+    ///     Depended database context for user
     /// </summary>
     public class UserDbContext : Microsoft.EntityFrameworkCore.DbContext
     {
@@ -21,7 +21,7 @@ namespace RESTfulAPIService.DbContext
         public DbSet<User> Users { get; set; }
 
         /// <summary>
-        /// Create structure in database 
+        ///     Create structure in database
         /// </summary>
         /// <param name="modelBuilder"></param>
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -29,8 +29,7 @@ namespace RESTfulAPIService.DbContext
             modelBuilder.HasDefaultSchema("public");
             modelBuilder.Entity<User>().UserMap();
 
-            base.OnModelCreating(modelBuilder);     
+            base.OnModelCreating(modelBuilder);
         }
     }
 }
-

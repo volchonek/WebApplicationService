@@ -6,8 +6,10 @@ using RESTfulAPIService.Models;
 
 namespace RESTfulAPIService.Controllers
 {
+    // TODO: mabe upgrade User Controller
     /// <summary>
     /// </summary>
+    [Produces("application/json")]
     [ApiController]
     [Route("[controller]")]
     public class UserController : ControllerBase
@@ -25,87 +27,102 @@ namespace RESTfulAPIService.Controllers
         }
 
         /// <summary>
-        /// Get all users
+        ///     Get all users
         /// </summary>
         /// <returns></returns>
+        /// <response code="200"> Will return a list of all users or an empty list </response>
         [HttpGet]
-        public async Task<IActionResult> GetAll() => Ok(await _iur.GetAll()); // 200
+        [ProducesResponseType(200)]
+        public async Task<IActionResult> GetAll()
+        {
+            return Ok(await _iur.GetAll());
+        }
 
         /// <summary>
-        /// Get user by id
+        ///     Get user by id
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
+        /// <response code="200"> Will return if user found </response>
+        /// <response code="400"> Will return if user not found </response>
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetByGuid(Guid id) => Ok(await _iur.GetByGuid(id)); // 200
+        [ProducesResponseType(200)]
+        [ProducesResponseType(400)]
+        public async Task<IActionResult> GetByGuid(Guid id)
+        {
+            return await _iur.GetByGuid(id) == null
+                ? Ok()
+                : BadRequest() as IActionResult;
+        }
 
         /// <summary>
-        /// Get user by name
+        ///     Get user by name
         /// </summary>
         /// <param name="name"></param>
         /// <returns></returns>
+        /// <response code="200"> Will return a list of users or an empty list </response>
         [HttpGet("name")]
-        public async Task<IActionResult> GetByName(string name) => Ok( await _iur.GetByName(name)); // 200
-        
+        [ProducesResponseType(200)]
+        public async Task<IActionResult> GetByName(string name)
+        {
+            return Ok(await _iur.GetByName(name));
+        }
+
         /// <summary>
-        /// Create user
+        ///     Create user
         /// </summary>
         /// <param name="value"></param>
         /// <returns></returns>
+        /// <response code="201"> Will return if create new user </response>
+        /// <response code="409"> Will return if user already exist </response>
         [HttpPost]
+        [ProducesResponseType(201)]
+        [ProducesResponseType(409)]
         public async Task<IActionResult> Create([FromBody] User value)
         {
-            // TODO: как перехватить сообщение при пустом body 
-            
             if (await _iur.Create(value))
-            {
-                return Created($"User create {value.Id}", value); // 201
-            }
-            else
-            {
-                return Conflict($"A user with this {value.Id} already exists."); // 409
-            }
+                return Created("User create", value);
+
+            return Conflict($"A user with this Id: {value.Id} already exists.");
         }
 
         /// <summary>
-        /// Update user by id
+        ///     Update user
         /// </summary>
-        /// <param name="id"></param>
         /// <param name="value"></param>
         /// <returns></returns>
-        [HttpPut("{id}")]
-        public async Task<IActionResult> Update(Guid id, [FromBody] User value)
+        /// <response code="201"> Will return if user update </response>
+        /// <response code="400"> Will return field Id is empty or 00000000-0000-0000-0000-000000000000 </response>
+        [ProducesResponseType(201)]
+        [ProducesResponseType(400)]
+        [HttpPut]
+        public async Task<IActionResult> Update([FromBody] User value)
         {
+            if (value.Id.ToString() == string.Empty || value.Id == Guid.Empty)
+                return BadRequest("The field Id is empty");
 
-            if (id != value.Id) 
-                return BadRequest($"The {id} does not match the {value.Id} in the body"); // 400
+            if (await _iur.Update(value))
+                return Created("User update ", value);
 
-            if (await _iur.Update(id, value))
-            {
-                return Created($"User {id} update or create successful", value); // 201
-            }
-            else
-            {
-                return BadRequest();
-            }
+            return BadRequest();
         }
 
         /// <summary>
-        /// Delete user by id
+        ///     Delete user
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
+        /// <response code="200"> Will return ID if user remote  </response>
+        /// <response code="400"> Will return if user not found </response>
         [HttpDelete("{id}")]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(400)]
         public async Task<IActionResult> Delete(Guid id)
         {
             if (await _iur.Delete(id))
-            {
-                return  Ok($"User delete {id}"); // 200
-            }
-            else
-            {
-                return NoContent(); // 204
-            }
+                return Ok($"User with Id: {id} was delete");
+
+            return BadRequest();
         }
     }
 }

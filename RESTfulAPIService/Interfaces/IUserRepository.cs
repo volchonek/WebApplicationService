@@ -6,49 +6,48 @@ using RESTfulAPIService.Models;
 namespace RESTfulAPIService.Interfaces
 {
     /// <summary>
-    /// Interface Users
+    ///     Interface fpr Users
     /// </summary>
     public interface IUserRepository
     {
         /// <summary>
-        /// Get all users
+        ///     Get all users
         /// </summary>
         /// <returns> Return all found users </returns>
         Task<List<User>> GetAll();
 
         /// <summary>
-        /// Get user by id
+        ///     Get user by id
         /// </summary>
-        /// <param name="id"> Guid of the found user </param>
+        /// <param name="id"> Guid for searching user </param>
         /// <returns> Found user will return </returns>
         Task<User> GetByGuid(Guid id);
 
         /// <summary>
-        /// Get users by name
+        ///     Get users by name
         /// </summary>
-        /// <param name="name"> Find user by name</param>
+        /// <param name="name"> Name for searching user</param>
         /// <returns> Return the list of the user found </returns>
         Task<List<User>> GetByName(string name);
-        
+
         /// <summary>
-        /// Create new user
+        ///     Create new user
         /// </summary>
         /// <param name="user"> New user </param>
         /// <returns> Return create user </returns>
         Task<bool> Create(User user);
 
         /// <summary>
-        /// Update or create user
+        ///     Update or create user
         /// </summary>
-        /// <param name="id"> Guid exist user or guid new user </param>
-        /// <param name="user"> New parameters user or new user </param>
+        /// <param name="user"> New parameters for user </param>
         /// <returns> Return update user </returns>
-        Task<bool> Update(Guid id, User user);
+        Task<bool> Update(User user);
 
         /// <summary>
-        /// Delete user
+        ///     Delete user
         /// </summary>
-        /// <param name="id">Guid delete user </param>
+        /// <param name="id"> Guid for delete user </param>
         /// <returns> Return deleting user </returns>
         Task<bool> Delete(Guid id);
     }
