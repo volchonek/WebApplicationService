@@ -10,7 +10,7 @@ using RESTfulAPIService.DbContext;
 namespace RESTfulAPIService.Migrations
 {
     [DbContext(typeof(UserDbContext))]
-    [Migration("20191024201751_UserMigration")]
+    [Migration("20191030215101_UserMigration")]
     partial class UserMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

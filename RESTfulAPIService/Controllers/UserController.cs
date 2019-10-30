@@ -33,11 +33,8 @@ namespace RESTfulAPIService.Controllers
         /// <response code="200"> Will return a list of all users or an empty list </response>
         [HttpGet]
         [ProducesResponseType(200)]
-        public async Task<IActionResult> GetAll()
-        {
-            return Ok(await _iur.GetAll());
-        }
-
+        public async Task<IActionResult> GetAll() => Ok(await _iur.GetAll());
+        
         /// <summary>
         ///     Get user by id
         /// </summary>
@@ -48,12 +45,7 @@ namespace RESTfulAPIService.Controllers
         [HttpGet("{id}")]
         [ProducesResponseType(200)]
         [ProducesResponseType(400)]
-        public async Task<IActionResult> GetByGuid(Guid id)
-        {
-            return await _iur.GetByGuid(id) == null
-                ? Ok()
-                : BadRequest() as IActionResult;
-        }
+        public async Task<IActionResult> GetByGuid(Guid id) => await _iur.GetByGuid(id) == null ? Ok() : BadRequest() as IActionResult;
 
         /// <summary>
         ///     Get user by name
@@ -63,11 +55,8 @@ namespace RESTfulAPIService.Controllers
         /// <response code="200"> Will return a list of users or an empty list </response>
         [HttpGet("name")]
         [ProducesResponseType(200)]
-        public async Task<IActionResult> GetByName(string name)
-        {
-            return Ok(await _iur.GetByName(name));
-        }
-
+        public async Task<IActionResult> GetByName(string name) => Ok(await _iur.GetByName(name));
+        
         /// <summary>
         ///     Create user
         /// </summary>

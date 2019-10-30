@@ -32,30 +32,21 @@ namespace RESTfulAPIService.Implementations
         ///     Get all users
         /// </summary>
         /// <returns> Return list users </returns>
-        public async Task<List<User>> GetAll()
-        {
-            return await _db.Users.ToListAsync();
-        }
+        public async Task<List<User>> GetAll() =>  await _db.Users.ToListAsync();
 
         /// <summary>
         ///     Find user by guid
         /// </summary>
         /// <param name="id"> Guid for search entity user </param>
         /// <returns> Return user </returns>
-        public async Task<User> GetByGuid(Guid id)
-        {
-            return await _db.Users.FindAsync(id);
-        }
+        public async Task<User> GetByGuid(Guid id) => await _db.Users.FindAsync(id);
 
         /// <summary>
         ///     Find user by id
         /// </summary>
         /// <param name="name"> Search user by name </param>
         /// <returns> Return list users </returns>
-        public async Task<List<User>> GetByName(string name)
-        {
-            return await _db.Users.Where(n => n.Name == name).ToListAsync();
-        }
+        public async Task<List<User>> GetByName(string name) => await _db.Users.Where(n => n.Name.Contains(name)).ToListAsync();
 
         /// <summary>
         ///     Create user in database
@@ -69,13 +60,16 @@ namespace RESTfulAPIService.Implementations
                 await _db.Users.AddAsync(user);
                 return await _db.SaveChangesAsync() > 0;
             }
+            catch (DbUpdateConcurrencyException)
+            {
+                throw;
+            }
             catch
             {
                 return false;
             }
         }
-
-        // TODO: update user
+        
         /// <summary>
         ///     Update user in database
         /// </summary>
@@ -85,10 +79,18 @@ namespace RESTfulAPIService.Implementations
         {
             try
             {
-                if (await _db.Users.FindAsync(user.Id) != null)
-                    _db.Users.Update(user);
+                var findUser = await _db.Users.FindAsync(user.Id);
+                
+                if (findUser == null) return false;
+                
+                findUser.Name = user.Name;
+                _db.Users.Update(findUser);
 
                 return await _db.SaveChangesAsync() > 0;
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                throw;
             }
             catch
             {
@@ -107,6 +109,10 @@ namespace RESTfulAPIService.Implementations
             {
                 _db.Users.Remove(await _db.Users.FindAsync(id));
                 return await _db.SaveChangesAsync() > 0;
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                throw;
             }
             catch
             {
