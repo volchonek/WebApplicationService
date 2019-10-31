@@ -6,7 +6,6 @@ using RESTfulAPIService.Models;
 
 namespace RESTfulAPIService.Controllers
 {
-    // TODO: mabe upgrade User Controller
     /// <summary>
     /// </summary>
     [Produces("application/json")]
@@ -80,7 +79,7 @@ namespace RESTfulAPIService.Controllers
         /// </summary>
         /// <param name="value"></param>
         /// <returns></returns>
-        /// <response code="201"> Will return if user update </response>
+        /// <response code="200"> Will return if user update </response>
         /// <response code="400"> Will return field Id is empty or 00000000-0000-0000-0000-000000000000 </response>
         [ProducesResponseType(201)]
         [ProducesResponseType(400)]
@@ -91,7 +90,7 @@ namespace RESTfulAPIService.Controllers
                 return BadRequest("The field Id is empty");
 
             if (await _iur.Update(value))
-                return Created("User update ", value);
+                return Ok("User update");
 
             return BadRequest();
         }

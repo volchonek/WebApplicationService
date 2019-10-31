@@ -88,9 +88,7 @@ namespace RESTfulAPIService
                         Title = "WebApplicationService",
                         Description = "Testing web application"
                     });
-
-                    swg.DescribeAllEnumsAsStrings();
-
+                    
                     var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
                     var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
 

@@ -46,8 +46,8 @@ namespace RESTfulAPIService.Implementations
         /// </summary>
         /// <param name="name"> Search user by name </param>
         /// <returns> Return list users </returns>
-        public async Task<List<User>> GetByName(string name) => await _db.Users.Where(n => n.Name.Contains(name)).ToListAsync();
-
+        public async Task<List<User>> GetByName(string name) => await _db.Users.Where(value => EF.Functions.ILike(value.Name, $"{name}%")).ToListAsync();
+       
         /// <summary>
         ///     Create user in database
         /// </summary>
@@ -79,13 +79,7 @@ namespace RESTfulAPIService.Implementations
         {
             try
             {
-                var findUser = await _db.Users.FindAsync(user.Id);
-                
-                if (findUser == null) return false;
-                
-                findUser.Name = user.Name;
-                _db.Users.Update(findUser);
-
+                _db.Users.Update(user);
                 return await _db.SaveChangesAsync() > 0;
             }
             catch (DbUpdateConcurrencyException)
