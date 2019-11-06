@@ -1,15 +1,8 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-using Microsoft.AspNetCore.SignalR;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Logging;
-using Microsoft.OpenApi.Extensions;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc;
 using Moq;
 using RESTfulAPIService.Controllers;
 using RESTfulAPIService.Interfaces;
-using RESTfulAPIService.Models;
 using Xunit;
 using Xunit.Abstractions;
 
@@ -19,11 +12,13 @@ namespace RESTfullAPIService.CotrollersTests
     {
         private UserController _userController;
         private readonly ITestOutputHelper _testOutputHelper;
+
         public UserControllerTest(ITestOutputHelper testOutputHelper)
         {
             _testOutputHelper = testOutputHelper;
         }
 
+        // TODO: Добавить логирование для тестов
 //        private UserController GetUserControllerer(ITestOutputHelper testOutputHelper)
 //        {
 //            ILogger<UserController> loggerForController = new XunitLogger<UserController>(testOutputHelper);
@@ -38,23 +33,23 @@ namespace RESTfullAPIService.CotrollersTests
 //        }
 
         [Fact]
-        public void GetAllTest()
+        public async Task GetAllTest()
         {
-            // Arrange - устанавливает начльные условия для выполнения теста
-            // создаем заглушку и устанавливаем код 200 после завершения выполнения операции
+            // Arrange - устанавливает начальные условия для выполнения теста
+            // создаем заглушку для контроллера эмулируя пработу с репозиторием  
             var iurMockCode = new Mock<IUserRepository>();
             iurMockCode.Setup(repo => repo.GetAll());
+            // создаем экземпляр контроллера 
+            var controller = new UserController(iurMockCode.Object);
 
-            var testCode = 200;
-            
             // Act - выполняет тест
-            var result = iurMockCode.Object.GetAll().Status;
-            
-            Console.WriteLine(result.ToString());
-            Console.WriteLine(iurMockCode.ToString());
+            var actionResult = await controller.GetAll();
 
             // Assert - верифицирует результат выполнения теста
-            Assert.Equal(testCode.ToString(), result.ToString());
+            // проверяем вовращаемый тип, должен быть OkObjectResult
+            var result = Assert.IsType<OkObjectResult>(actionResult);
+            // проверяем статус код, должен быть 200.
+            Assert.Equal(Microsoft.AspNetCore.Http.StatusCodes.Status200OK, result.StatusCode);
         }
     }
 }
