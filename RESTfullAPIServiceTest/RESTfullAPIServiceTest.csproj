@@ -9,6 +9,7 @@
     </PropertyGroup>
 
     <ItemGroup>
+        <PackageReference Include="FluentAssertions" Version="5.9.0" />
         <PackageReference Include="Microsoft.Extensions.Logging" Version="3.1.0-preview2.19525.4" />
         <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.2.0" />
         <PackageReference Include="Moq" Version="4.13.1" />
@@ -19,6 +20,11 @@
 
     <ItemGroup>
       <ProjectReference Include="..\RESTfulAPIService\RESTfulAPIService.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="IntegrationTests" />
+      <Folder Include="ModuleTests" />
     </ItemGroup>
 
 </Project>

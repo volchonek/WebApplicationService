@@ -33,7 +33,7 @@ namespace RESTfulAPIService.Controllers
         [HttpGet]
         [ProducesResponseType(200)]
         public async Task<IActionResult> GetAll() => Ok(await _iur.GetAll());
-        
+
         /// <summary>
         ///     Get user by id
         /// </summary>
@@ -44,7 +44,11 @@ namespace RESTfulAPIService.Controllers
         [HttpGet("{id}")]
         [ProducesResponseType(200)]
         [ProducesResponseType(400)]
-        public async Task<IActionResult> GetByGuid(Guid id) => await _iur.GetByGuid(id) == null ? Ok() : BadRequest() as IActionResult;
+        public async Task<IActionResult> GetByGuid(Guid id)
+        {
+            var user = await _iur.GetByGuid(id);
+            return user != null ? Ok(user) : BadRequest() as IActionResult;
+        }
 
         /// <summary>
         ///     Get user by name
@@ -62,9 +66,11 @@ namespace RESTfulAPIService.Controllers
         /// <param name="value"></param>
         /// <returns></returns>
         /// <response code="201"> Will return if create new user </response>
+        /// <response code="400"> Will return if body for create is empty </response>
         /// <response code="409"> Will return if user already exist </response>
         [HttpPost]
         [ProducesResponseType(201)]
+        [ProducesResponseType(400)]
         [ProducesResponseType(409)]
         public async Task<IActionResult> Create([FromBody] User value)
         {
@@ -80,10 +86,10 @@ namespace RESTfulAPIService.Controllers
         /// <param name="value"></param>
         /// <returns></returns>
         /// <response code="200"> Will return if user update </response>
-        /// <response code="400"> Will return field Id is empty or 00000000-0000-0000-0000-000000000000 </response>
-        [ProducesResponseType(201)]
-        [ProducesResponseType(400)]
+        /// <response code="400"> Will return if field Id is empty or body for update is empty</response>
         [HttpPut]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(400)]
         public async Task<IActionResult> Update([FromBody] User value)
         {
             if (value.Id.ToString() == string.Empty || value.Id == Guid.Empty)
@@ -108,7 +114,7 @@ namespace RESTfulAPIService.Controllers
         public async Task<IActionResult> Delete(Guid id)
         {
             if (await _iur.Delete(id))
-                return Ok($"User with Id: {id} was delete");
+                return Ok($"User delete");
 
             return BadRequest();
         }
