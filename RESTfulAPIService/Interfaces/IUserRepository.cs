@@ -21,7 +21,7 @@ namespace RESTfulAPIService.Interfaces
         /// </summary>
         /// <param name="id"> Guid for searching user </param>
         /// <returns> Found user will return </returns>
-        Task<User> GetByGuid(Guid id);
+        Task<User> GetById(Guid id);
 
         /// <summary>
         ///     Get users by name

@@ -14,15 +14,17 @@ namespace RESTfulAPIService.Controllers
     public class UserController : ControllerBase
     {
         /// <summary>
+        ///     Var type fo DI.
         /// </summary>
-        private readonly IUserRepository _iur;
+        private readonly IUserRepository _userRepository;
 
         /// <summary>
+        ///     Dependency inject.
         /// </summary>
-        /// <param name="iur"></param>
-        public UserController(IUserRepository iur)
+        /// <param name="userRepository"></param>
+        public UserController(IUserRepository userRepository)
         {
-            _iur = iur;
+            _userRepository = userRepository;
         }
 
         /// <summary>
@@ -32,7 +34,7 @@ namespace RESTfulAPIService.Controllers
         /// <response code="200"> Will return a list of all users or an empty list </response>
         [HttpGet]
         [ProducesResponseType(200)]
-        public async Task<IActionResult> GetAll() => Ok(await _iur.GetAll());
+        public async Task<IActionResult> GetAll() => Ok(await _userRepository.GetAll());
 
         /// <summary>
         ///     Get user by id
@@ -40,53 +42,69 @@ namespace RESTfulAPIService.Controllers
         /// <param name="id"></param>
         /// <returns></returns>
         /// <response code="200"> Will return if user found </response>
-        /// <response code="400"> Will return if user not found </response>
+        /// <response code="404"> Will return if user not found </response>
         [HttpGet("{id}")]
         [ProducesResponseType(200)]
-        [ProducesResponseType(400)]
-        public async Task<IActionResult> GetByGuid(Guid id)
+        [ProducesResponseType(404)]
+        public async Task<IActionResult> GetById(Guid id)
         {
-            var user = await _iur.GetByGuid(id);
-            return user != null ? Ok(user) : BadRequest() as IActionResult;
+            var user = await _userRepository.GetById(id);
+            return user != null ? Ok(user) : NotFound() as IActionResult;
         }
 
         /// <summary>
-        ///     Get user by name
+        ///     Get user by name.
         /// </summary>
         /// <param name="name"></param>
         /// <returns></returns>
-        /// <response code="200"> Will return a list of users or an empty list </response>
+        /// <response code="200"> Will return a list of users or an empty list. </response>
+        /// <response code="404"> Will return if user not found. </response>
         [HttpGet("name")]
         [ProducesResponseType(200)]
-        public async Task<IActionResult> GetByName(string name) => Ok(await _iur.GetByName(name));
-        
+        [ProducesResponseType(404)]
+        public async Task<IActionResult> GetByName(string name)
+        {
+            var user = await _userRepository.GetByName(name);
+            return user != null ? Ok(user) : NotFound() as IActionResult;
+        }
+
         /// <summary>
-        ///     Create user
+        ///     Create user.
         /// </summary>
         /// <param name="value"></param>
         /// <returns></returns>
-        /// <response code="201"> Will return if create new user </response>
-        /// <response code="400"> Will return if body for create is empty </response>
-        /// <response code="409"> Will return if user already exist </response>
+        /// <response code="201"> Will return if create new user. </response>
+        /// <response code="400"> Will return if body for create is empty or if user a have invalid parameters. </response>
+        /// <response code="409"> Will return if user already exist. </response>
         [HttpPost]
         [ProducesResponseType(201)]
         [ProducesResponseType(400)]
         [ProducesResponseType(409)]
         public async Task<IActionResult> Create([FromBody] User value)
         {
-            if (await _iur.Create(value))
-                return Created("User create", value);
+            if (value != null)
+                return BadRequest("The body is null.");
+            
+            if (value.Id.GetType() != typeof(Guid))
+                return BadRequest($"The field Id is have invalid type: {value.Id.GetType()}.");
+            
+            if (value.Name.GetType() != typeof(string))
+                return BadRequest($"The field Name is have invalid type: {value.Id.GetType()}.");
+            
+            if (await _userRepository.Create(value))
+                return Created("User is create.", value);
 
             return Conflict($"A user with this Id: {value.Id} already exists.");
         }
 
         /// <summary>
-        ///     Update user
+        ///     Update user.
         /// </summary>
         /// <param name="value"></param>
         /// <returns></returns>
-        /// <response code="200"> Will return if user update </response>
-        /// <response code="400"> Will return if field Id is empty or body for update is empty</response>
+        /// <response code="200"> Will return if user update. </response>
+        /// <response code="400"> Will return if user a have invalid parameters. </response>
+        /// <response code="404"> Will return if user not found. </response>
         [HttpPut]
         [ProducesResponseType(200)]
         [ProducesResponseType(400)]
@@ -94,36 +112,44 @@ namespace RESTfulAPIService.Controllers
         public async Task<IActionResult> Update([FromBody] User value)
         {
             if (value.Id.GetType() != typeof(Guid))
-                return BadRequest($"The field Id is have invalid type: {value.Id.GetType()}");
+                return BadRequest($"The field Id is have invalid type: {value.Id.GetType()}.");
             
-            if (value.Id.GetType() != typeof(string))
-                return BadRequest($"The field Name is have invalid type: {value.Id.GetType()}");
+            if (value.Name.GetType() != typeof(string))
+                return BadRequest($"The field Name is have invalid type: {value.Id.GetType()}.");
             
-            if (value.Id.ToString() == string.Empty || value.Id == Guid.Empty)
-                return BadRequest("The field Id is empty");
+            if (value.Id == Guid.Empty)
+                return BadRequest("The field Id is empty.");
 
-            if (await _iur.Update(value))
-                return Ok("User update");
+            if (await _userRepository.Update(value))
+                return Ok("User is update.");
 
             return NotFound();
         }
 
         /// <summary>
-        ///     Delete user
+        ///     Delete user.
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        /// <response code="200"> Will return ID if user remote  </response>
-        /// <response code="400"> Will return if user not found </response>
+        /// <response code="200"> Will return ID if user remote.  </response>
+        /// <response code="400"> Will return if user a have invalid parameters. </response>
+        /// <response code="404"> Will return if user not found. </response>
         [HttpDelete("{id}")]
         [ProducesResponseType(200)]
         [ProducesResponseType(400)]
+        [ProducesResponseType(404)]
         public async Task<IActionResult> Delete(Guid id)
         {
-            if (await _iur.Delete(id))
-                return Ok($"User delete");
+            if (id.GetType() != typeof(Guid))
+                return BadRequest($"The field Id a have invalid type: {id.GetType()}.");
+            
+            if (id == Guid.Empty)
+                return BadRequest("The field Id is empty.");
+            
+            if (await _userRepository.Delete(id))
+                return Ok($"User is delete.");
 
-            return BadRequest();
+            return NotFound();
         }
     }
 }
