@@ -26,9 +26,7 @@ namespace RESTfulAPIService
                 .ConfigureAppConfiguration(config => { config.AddCommandLine(args); })
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
-                    webBuilder
-                        .UseStartup<Startup>()
-                        .UseKestrel();
+                    webBuilder.UseStartup<Startup>().UseKestrel();
                 });
         }
     }

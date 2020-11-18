@@ -12,8 +12,8 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
 using RESTfulAPIService.DbContext;
-using RESTfulAPIService.Implementations;
 using RESTfulAPIService.Interfaces;
+using RESTfulAPIService.Repositories;
 using Serilog;
 
 namespace RESTfulAPIService
@@ -43,7 +43,7 @@ namespace RESTfulAPIService
         }
 
         /// <summary>
-        ///     // This method gets called by the runtime. Use this method to add services to the container.
+        ///      This method gets called by the runtime. Use this method to add services to the container.
         /// </summary>
         /// <param name="services"></param>
         public void ConfigureServices(IServiceCollection services)
@@ -98,7 +98,7 @@ namespace RESTfulAPIService
         }
 
         /// <summary>
-        ///     // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
+        ///     This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         /// </summary>
         /// <param name="app"></param>
         /// <param name="env"></param>

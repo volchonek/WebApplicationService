@@ -90,15 +90,22 @@ namespace RESTfulAPIService.Controllers
         [HttpPut]
         [ProducesResponseType(200)]
         [ProducesResponseType(400)]
+        [ProducesResponseType(404)]
         public async Task<IActionResult> Update([FromBody] User value)
         {
+            if (value.Id.GetType() != typeof(Guid))
+                return BadRequest($"The field Id is have invalid type: {value.Id.GetType()}");
+            
+            if (value.Id.GetType() != typeof(string))
+                return BadRequest($"The field Name is have invalid type: {value.Id.GetType()}");
+            
             if (value.Id.ToString() == string.Empty || value.Id == Guid.Empty)
                 return BadRequest("The field Id is empty");
 
             if (await _iur.Update(value))
                 return Ok("User update");
 
-            return BadRequest();
+            return NotFound();
         }
 
         /// <summary>

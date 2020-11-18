@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using FluentAssertions;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
 using RESTfulAPIService.Controllers;
@@ -9,16 +10,14 @@ using RESTfulAPIService.Interfaces;
 using RESTfulAPIService.Models;
 using Xunit;
 using Xunit.Abstractions;
-using FluentAssertions;
 
 //using AutoFixture;
 //using System.Diagnostics.CodeAnalysis;
 
-namespace RESTfullAPIService.CotrollersTests
+namespace RESTfullAPIService.ModuleTests.CotrollersTests
 {
     public class UserControllerTest
     {
-        private UserController _userController;
         private readonly ITestOutputHelper _testOutputHelper;
 
         public UserControllerTest(ITestOutputHelper testOutputHelper)
@@ -26,7 +25,7 @@ namespace RESTfullAPIService.CotrollersTests
             _testOutputHelper = testOutputHelper;
         }
 
-        // TODO: Добавить логирование для тестов
+        // TODO: Will be add loging for are tests.
 //        private UserController GetUserControllerer(ITestOutputHelper testOutputHelper)
 //        {
 //            ILogger<UserController> loggerForController = new XunitLogger<UserController>(testOutputHelper);
@@ -240,7 +239,7 @@ namespace RESTfullAPIService.CotrollersTests
         }
 
         [Fact]
-        public async Task Controller_Create_ReturnCreated()
+        public async Task Controller_Create_ReturnUser()
         {
             // Arrange
             var testData = new User()
@@ -305,9 +304,57 @@ namespace RESTfullAPIService.CotrollersTests
             
             // Assert
             Assert.IsType<OkObjectResult>(result);
-
         }
+
+        [Fact]
+       public async Task Controller_Update_ReturnBadRequest_GetByGuid()
+       {
+           // Arrange
+           var testData = new User()
+           {
+               Id = new Guid("960925df-9161-456d-96f0-8f21f3424ef9"),
+               Name = "user"
+           };
+
+           var mock = new Mock<IUserRepository>();
+           
+           mock.Setup(repository => repository.Update(testData))
+               .ReturnsAsync(true);
+           
+           var controller = new UserController(mock.Object);
+
+           // Act
+           var result = await controller.GetByGuid(testData.Id);
+           
+           // Assert
+           Assert.IsType<BadRequestResult>(result);
+       }
         
+       // TODO: BadRequest
+       [Fact]
+       public async Task Controller_Update_ReturnBadRequest_Delete()
+       {
+           // Arrange
+           var testData = new User()
+           {
+               Id = new Guid("960925df-9161-456d-96f0-8f21f3424ef9"),
+               Name = "another_user"
+           };
+
+           var mock = new Mock<IUserRepository>();
+           
+           mock.Setup(repository => repository.Update(testData))
+               .ReturnsAsync(true);
+           
+           var controller = new UserController(mock.Object);
+
+           // Act
+           var result = await controller.Delete(testData.Id);
+           
+           // Assert
+           Assert.IsType<BadRequestResult>(result);
+       }
+       
         [Fact]
         public async Task Controller_Delete_ReturnOk()
         {
@@ -326,7 +373,6 @@ namespace RESTfullAPIService.CotrollersTests
             // Assert
             Assert.IsType<OkObjectResult>(result);
         }
-        
         
         [Fact]
         public async Task Controller_Delete_ReturnBadRequest()
@@ -347,100 +393,51 @@ namespace RESTfullAPIService.CotrollersTests
             
             // Assert
             Assert.IsType<BadRequestResult>(result);
-
         }
-        
-        // TODO: BadRequest
-//        [Fact]
-//        public async Task Controller_Update_ReturnBadRequest()
-//        {
-//            // Arrange
-//            var testData = new User()
-//            {
-//                Id = new Guid("960925df-9161-456d-96f0-8f21f3424ef9"),
-//                Name = "user"
-//            };
-//
-//            var mock = new Mock<IUserRepository>();
-//            
-//            mock.Setup(repository => repository.Update(testData))
-//                .ReturnsAsync(true);
-//            
-//            var controller = new UserController(mock.Object);
-//
-//            // Act
-//            var result = await controller.Create(testData);
-//            
-//            // Assert
-//            Assert.IsType<BadRequestResult>(result);
-//        }
 
-        // TODO: как проверить 400-й код ??
-//        [Fact]
-//        public async Task Controller_Create_ReturnBadRequest()
-//        {
-//            // Arrange
-//            var testData = new User()
-//            {
-//                Id = new Guid("960925df-9161-456d-96f0-8f21f3424ef9"),
-//                Name = "user"
-//            };
-//            
-//            var mock = new Mock<IUserRepository>();
-//
-//             mock.Setup(repository => repository.Create(testData))
-//                            .ReturnsAsync(false);
-//            
-//            var controller = new UserController(mock.Object);
-//
-//            // Act
-//            var result = await controller.Create(testData);
-//            
-//            // Assert
-//            Assert.IsType<BadRequestResult>(result);
-//        }
-        
-        // TODO: доделать тесты на BadRequest
-//        [Theory]
-//        [MemberData(nameof(BadRequestData))]
-//        public async Task Controller_GeByGuid_ReturnBadRequest(string id, Exception exception)
-//        {
-//            // Arrange
-//            var guid = new Guid(id);
-//
-//            var mock = new Mock<IUserRepository>();
-//            mock.Setup(repositoy => repositoy.GetByGuid(guid))
-//                .Returns((Task<User>) Task.FromException(exception));
-//
-//            var contoller = new UserController(mock.Object);
-//
-//            // Act
-//            // var result = await contoller.GetByGuid(guid);
-//
-//            // Assert
-//            await Assert.ThrowsAnyAsync<ArgumentException>(() => contoller.GetByGuid(guid));
-//        }
-//
-//        public static IEnumerable<object[]> BadRequestData
-//        {
-//            get
-//            {
-//                return new[]
-//                {
-//                    new object[]
-//                    {
-//                        "960925df-9161-456d-96f0-!@#$%^&*()<>", new ArgumentException()
-//                    },
-//                    new object[]
-//                    {
-//                        "960925df-9161-456d-96f0-8f21f3424ef", new ArgumentException()
-//                    },
-//                    new object[]
-//                    {
-//                        "", new ArgumentException()
-//                    }
-//                };
-//            }
-//        }
+        [Fact]
+        public async Task Controller_Delete_ReturnBadRequest_GetByGuid()
+        {
+            // Arrange
+            var Id = new Guid("960925df-9161-456d-96f0-8f21f3424ef9");
+            var Name = "user";
+            
+            var mock = new Mock<IUserRepository>();
+            
+            mock.Setup(repository => repository.Delete(Id))
+                .ReturnsAsync(true);
+            
+            var controller = new UserController(mock.Object);
+
+            // Act
+            var result = await controller.GetByGuid(Id);
+            
+            // Assert
+            Assert.IsType<BadRequestResult>(result);
+        }
+
+        [Fact]
+       public async Task Controller_Delete_404()
+       {
+           // Arrange
+           var testData = new User()
+           {
+               Id = new Guid("960925df-9161-456d-96f0-8f21f3424ef9"),
+               Name = "user"
+           };
+           
+           var mock = new Mock<IUserRepository>();
+       
+           mock.Setup(repository => repository.Create(testData))
+               .ReturnsAsync(false);
+           
+           var controller = new UserController(mock.Object);
+       
+           // Act
+           var result = await controller.Create(testData);
+           
+           // Assert
+           Assert.IsType<NotFoundResult>(result);
+       }
     }
 }

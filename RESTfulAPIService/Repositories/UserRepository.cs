@@ -9,10 +9,10 @@ using RESTfulAPIService.Models;
 
 // TODO: database exception handling
 
-namespace RESTfulAPIService.Implementations
+namespace RESTfulAPIService.Repositories
 {
     /// <summary>
-    ///     Implementation User Repository
+    ///     Implementation User Repository.
     /// </summary>
     public class UserRepository : IUserRepository
     {
@@ -29,27 +29,27 @@ namespace RESTfulAPIService.Implementations
         }
 
         /// <summary>
-        ///     Get all users
+        ///     Get all users.
         /// </summary>
         /// <returns> Return list users </returns>
         public async Task<List<User>> GetAll() =>  await _db.Users.ToListAsync();
 
         /// <summary>
-        ///     Find user by guid
+        ///     Find user by guid.
         /// </summary>
         /// <param name="id"> Guid for search entity user </param>
         /// <returns> Return user </returns>
         public async Task<User> GetByGuid(Guid id) => await _db.Users.FindAsync(id);
 
         /// <summary>
-        ///     Find user by id
+        ///     Find user by id.
         /// </summary>
         /// <param name="name"> Search user by name </param>
         /// <returns> Return list users </returns>
         public async Task<List<User>> GetByName(string name) => await _db.Users.Where(value => EF.Functions.ILike(value.Name, $"{name}%")).ToListAsync();
        
         /// <summary>
-        ///     Create user in database
+        ///     Create user in database.
         /// </summary>
         /// <param name="user"> Entity user </param>
         /// <returns> Return true/false if user created </returns>
