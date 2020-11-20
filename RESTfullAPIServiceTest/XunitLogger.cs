@@ -33,19 +33,18 @@ namespace RESTfullAPIService
             return this;
         }
     }
-    
-    public class XUnitLoggerProvider:ILoggerProvider
+
+    public class XUnitLoggerProvider : ILoggerProvider
     {
         private readonly ILogger _logger;
-
-        public void Dispose()
-        {
-        
-        }
 
         public XUnitLoggerProvider(ILogger logger)
         {
             _logger = logger;
+        }
+
+        public void Dispose()
+        {
         }
 
         public ILogger CreateLogger(string categoryName)

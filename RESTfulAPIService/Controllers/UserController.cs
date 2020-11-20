@@ -34,7 +34,10 @@ namespace RESTfulAPIService.Controllers
         /// <response code="200"> Will return a list of all users or an empty list </response>
         [HttpGet]
         [ProducesResponseType(200)]
-        public async Task<IActionResult> GetAll() => Ok(await _userRepository.GetAll());
+        public async Task<IActionResult> GetAll()
+        {
+            return Ok(await _userRepository.GetAll());
+        }
 
         /// <summary>
         ///     Get user by id
@@ -84,13 +87,13 @@ namespace RESTfulAPIService.Controllers
         {
             if (value == null)
                 return BadRequest("The body is null.");
-            
+
             if (value.Id.GetType() != typeof(Guid))
                 return BadRequest($"The field Id is have invalid type: {value.Id.GetType()}.");
-            
+
             if (value.Name.GetType() != typeof(string))
                 return BadRequest($"The field Name is have invalid type: {value.Id.GetType()}.");
-            
+
             if (await _userRepository.Create(value))
                 return Created("User is create.", value);
 
@@ -113,10 +116,10 @@ namespace RESTfulAPIService.Controllers
         {
             if (value.Id.GetType() != typeof(Guid))
                 return BadRequest($"The field Id is have invalid type: {value.Id.GetType()}.");
-            
+
             if (value.Name.GetType() != typeof(string))
                 return BadRequest($"The field Name is have invalid type: {value.Id.GetType()}.");
-            
+
             if (value.Id == Guid.Empty)
                 return BadRequest("The field Id is empty.");
 
@@ -142,12 +145,12 @@ namespace RESTfulAPIService.Controllers
         {
             if (id.GetType() != typeof(Guid))
                 return BadRequest($"The field Id a have invalid type: {id.GetType()}.");
-            
+
             if (id == Guid.Empty)
                 return BadRequest("The field Id is empty.");
-            
+
             if (await _userRepository.Delete(id))
-                return Ok($"User is delete.");
+                return Ok("User is delete.");
 
             return NotFound();
         }

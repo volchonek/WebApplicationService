@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace RESTfulAPIService.Migrations
 {
-    public partial class UserMigration : Migration
+    public partial class AddPerson : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -15,12 +15,12 @@ namespace RESTfulAPIService.Migrations
                 schema: "public",
                 columns: table => new
                 {
-                    Guid = table.Column<Guid>(nullable: false),
-                    Name = table.Column<string>(nullable: true)
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    Name = table.Column<string>(type: "text", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_User", x => x.Guid);
+                    table.PrimaryKey("PK_User", x => x.Id);
                 });
         }
 

@@ -17,13 +17,12 @@ namespace RESTfullAPIService.ModuleTests.RepositoriesTests
         private List<User> GetTestSessions()
         {
             var sessions = new List<User>();
-            sessions.Add(new User()
+            sessions.Add(new User
             {
-
                 Id = new Guid(),
                 Name = "Test One"
             });
-            sessions.Add(new User()
+            sessions.Add(new User
             {
                 Id = new Guid(),
                 Name = "Test Two"
