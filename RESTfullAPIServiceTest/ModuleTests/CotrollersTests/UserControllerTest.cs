@@ -96,7 +96,7 @@ namespace RESTfullAPIService.ModuleTests.CotrollersTests
             value.Should().BeEquivalentTo(testList);
         }
 
-        // GetByGuid
+        // GetById
         [Fact]
         public async Task Controller_GeByGuid_ReturnUser()
         {
@@ -109,7 +109,7 @@ namespace RESTfullAPIService.ModuleTests.CotrollersTests
             
             var mock = new Mock<IUserRepository>();
             
-            mock.Setup(repository => repository.GetByGuid(new Guid("960925df-9161-456d-96f0-8f21f3424ef9")))
+            mock.Setup(repository => repository.GetById(new Guid("960925df-9161-456d-96f0-8f21f3424ef9")))
                 .ReturnsAsync(await Task.FromResult(
                     new User()
                     {
@@ -120,7 +120,7 @@ namespace RESTfullAPIService.ModuleTests.CotrollersTests
             var controller = new UserController(mock.Object);
 
             // Act
-            var result = await controller.GetByGuid(new Guid("960925df-9161-456d-96f0-8f21f3424ef9"));
+            var result = await controller.GetById(new Guid("960925df-9161-456d-96f0-8f21f3424ef9"));
             
             // Assert
             var  okObjectResult = Assert.IsAssignableFrom<OkObjectResult>(result);
@@ -138,7 +138,7 @@ namespace RESTfullAPIService.ModuleTests.CotrollersTests
             
             var mock = new Mock<IUserRepository>();
             
-            mock.Setup(repository => repository.GetByGuid(goodId))
+            mock.Setup(repository => repository.GetById(goodId))
                 .ReturnsAsync(await Task.FromResult(
                     new User()
                     {
@@ -149,7 +149,7 @@ namespace RESTfullAPIService.ModuleTests.CotrollersTests
             var controller = new UserController(mock.Object);
 
             // Act
-            var result = await controller.GetByGuid(badId);
+            var result = await controller.GetById(badId);
             
             // Assert
             Assert.IsAssignableFrom<BadRequestResult>(result);
@@ -307,7 +307,7 @@ namespace RESTfullAPIService.ModuleTests.CotrollersTests
         }
 
         [Fact]
-       public async Task Controller_Update_ReturnBadRequest_GetByGuid()
+       public async Task Controller_Update_ReturnBadRequest_GetById()
        {
            // Arrange
            var testData = new User()
@@ -324,7 +324,7 @@ namespace RESTfullAPIService.ModuleTests.CotrollersTests
            var controller = new UserController(mock.Object);
 
            // Act
-           var result = await controller.GetByGuid(testData.Id);
+           var result = await controller.GetById(testData.Id);
            
            // Assert
            Assert.IsType<BadRequestResult>(result);
@@ -396,7 +396,7 @@ namespace RESTfullAPIService.ModuleTests.CotrollersTests
         }
 
         [Fact]
-        public async Task Controller_Delete_ReturnBadRequest_GetByGuid()
+        public async Task Controller_Delete_ReturnBadRequest_GetById()
         {
             // Arrange
             var Id = new Guid("960925df-9161-456d-96f0-8f21f3424ef9");
@@ -410,14 +410,14 @@ namespace RESTfullAPIService.ModuleTests.CotrollersTests
             var controller = new UserController(mock.Object);
 
             // Act
-            var result = await controller.GetByGuid(Id);
+            var result = await controller.GetById(Id);
             
             // Assert
             Assert.IsType<BadRequestResult>(result);
         }
 
         [Fact]
-       public async Task Controller_Delete_404()
+       public async Task Controller_Delete_NotFound()
        {
            // Arrange
            var testData = new User()

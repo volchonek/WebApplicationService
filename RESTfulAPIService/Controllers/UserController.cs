@@ -82,7 +82,7 @@ namespace RESTfulAPIService.Controllers
         [ProducesResponseType(409)]
         public async Task<IActionResult> Create([FromBody] User value)
         {
-            if (value != null)
+            if (value == null)
                 return BadRequest("The body is null.");
             
             if (value.Id.GetType() != typeof(Guid))

@@ -56,7 +56,7 @@ namespace RESTfulAPIService
             {
                 // options.UseNpgsql("Host = 192.168.1.49; Port = 5433; Database = WebAppService; Username = user; Password = password");
                 options.UseNpgsql(
-                    $"Host = {_configuration.GetValue("host", "192.168.1.49")};" +
+                    $"Host = {_configuration.GetValue("host", "192.168.1.33")};" +
                     $" Port = {_configuration.GetValue("port", "5433")}; " +
                     $"Database = {_configuration.GetValue("database", "WebAppService")}; " +
                     $"Username = {_configuration.GetValue("user", "user")}; " +

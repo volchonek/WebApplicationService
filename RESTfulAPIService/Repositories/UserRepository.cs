@@ -39,7 +39,7 @@ namespace RESTfulAPIService.Repositories
         /// </summary>
         /// <param name="id"> Guid for search entity user </param>
         /// <returns> Return user </returns>
-        public async Task<User> GetByGuid(Guid id) => await _db.Users.FindAsync(id);
+        public async Task<User> GetById(Guid id) => await _db.Users.FindAsync(id);
 
         /// <summary>
         ///     Find user by id.
