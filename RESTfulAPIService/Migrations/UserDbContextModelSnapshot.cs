@@ -16,20 +16,20 @@ namespace RESTfulAPIService.Migrations
 #pragma warning disable 612, 618
             modelBuilder
                 .HasDefaultSchema("public")
-                .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn)
-                .HasAnnotation("ProductVersion", "3.1.0-preview1.19506.2")
-                .HasAnnotation("Relational:MaxIdentifierLength", 63);
+                .UseIdentityByDefaultColumns()
+                .HasAnnotation("Relational:MaxIdentifierLength", 63)
+                .HasAnnotation("ProductVersion", "5.0.0");
 
             modelBuilder.Entity("RESTfulAPIService.Models.User", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnName("Guid")
-                        .HasColumnType("uuid");
+                        .HasColumnType("uuid")
+                        .HasColumnName("Id");
 
                     b.Property<string>("Name")
-                        .HasColumnName("Name")
-                        .HasColumnType("text");
+                        .HasColumnType("text")
+                        .HasColumnName("Name");
 
                     b.HasKey("Id");
 

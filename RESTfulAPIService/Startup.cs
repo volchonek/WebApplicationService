@@ -43,7 +43,7 @@ namespace RESTfulAPIService
         }
 
         /// <summary>
-        ///      This method gets called by the runtime. Use this method to add services to the container.
+        ///     This method gets called by the runtime. Use this method to add services to the container.
         /// </summary>
         /// <param name="services"></param>
         public void ConfigureServices(IServiceCollection services)
@@ -58,7 +58,7 @@ namespace RESTfulAPIService
                 options.UseNpgsql(
                     $"Host = {_configuration.GetValue("host", "192.168.1.33")};" +
                     $" Port = {_configuration.GetValue("port", "5433")}; " +
-                    $"Database = {_configuration.GetValue("database", "WebAppService")}; " +
+                    $"Database = {_configuration.GetValue("database", "web_app")}; " +
                     $"Username = {_configuration.GetValue("user", "user")}; " +
                     $"Password = {_configuration.GetValue("password", "password")}");
             });
@@ -88,7 +88,7 @@ namespace RESTfulAPIService
                         Title = "WebApplicationService",
                         Description = "Testing web application"
                     });
-                    
+
                     var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
                     var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
 
